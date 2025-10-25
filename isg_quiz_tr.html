@@ -1,0 +1,112 @@
+
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>İSG Testi (37 Soru)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; margin: 24px; }
+  h1 { margin-bottom: 0.2rem; }
+  .desc { color: #555; margin-bottom: 1rem; }
+  .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .q-title { font-weight: 600; margin-bottom: 8px; }
+  .opt { margin: 6px 0; padding: 6px 10px; border-radius: 6px; display: block; }
+  .opt.correct { background: #e6ffed; }
+  .opt.incorrect { background: #ffecec; }
+  .correct-answer { font-size: 0.95rem; color: #0a7f2e; display:none; margin-top: 6px; }
+  .controls { position: sticky; top: 0; background: #fff; padding: 12px 0; z-index: 10; border-bottom: 1px solid #eee; margin-bottom: 16px; }
+  button { padding: 10px 14px; border-radius: 8px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer; }
+  button.primary { background:#0a7f2e; color:#fff; border-color:#0a7f2e; }
+</style>
+</head>
+<body>
+  <h1>İş Sağlığı ve Güvenliği Testi</h1>
+  <div class="desc">Toplam <b>37</b> soru. Cevapları işaretleyin ve <b>Sonuçları Göster</b> düğmesine basın.</div>
+  <div class="controls">
+    <button class="primary" onclick="grade()">Sonuçları Göster</button>
+    <button onclick="resetQuiz()">Sıfırla</button>
+  </div>
+  <div id="quiz"></div>
+  <div id="result" class="card" style="display:none;"></div>
+<script>
+const questions = [{"q": "Aşağıdakilerden hangisi İSG'nin amaçları arasında değildir?", "opts": ["İşletmenin güvenliğini sağlamak", "Çalışanı korumak", "Üretimin güvenliğini sağlamak", "İşverenin kazancını artırmak", "Boş bırak"], "answer": 3}, {"q": "Aşağıdakilerden hangisi 6331 sayılı kanun kapsamındadır?", "opts": ["Milli İstihbarat Teşkilatı", "Kolluk kuvvetleri", "Çırak ve stajyerler", "Bağımsız çalışanları", "Boş bırak"], "answer": 2}, {"q": "Dr. Bernardino RAMAZZİNİ kimdir?", "opts": ["Kurşun zehirlenmesini bulan kişidir.", "Meslek Hastalığı kavramının babasıdır.", "İş güvenliği kavramından bahseden ilk kişidir.", "Sporcu hastalığından ilk söz edendir.", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi iş sağlığı ve güvenliğinin çalışma alanı içerisine girer?", "opts": ["Hepsi", "Çalışan", "Çalışma şartları ve insana saygı", "Çalışma ortamı", "Boş bırak"], "answer": 0}, {"q": "6331 İSG kanununa göre çalışma hayatının saç ayaklarını kimlerden oluşmaktadır?", "opts": ["Devlet ve İşçiler.", "Devlet, İşçiler ve İşverenler.", "Yalnızca işverenler.", "Yalnızca işçiler.", "Boş bırak"], "answer": 1}, {"q": "Çalışma hayatınızı ilgilendiren en son İş Sağlığı ve Güvenliği ile ilgili yasa aşağıdakilerden hangisidir?", "opts": ["6331 sayılı iş sağlığı ve güvenliği kanunu", "5510 sayılı SSK kanunu", "1475 sayılı iş kanunu", "4857 sayılı iş kanunu", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi çalışanların haklarından değildir?", "opts": ["Çalışmaktan kaçınma ve fesih hakkı", "Görüş bildirme ve katılma hakkı", "İşverenin yasal talimatlarına uymama hakkı", "Bilme ve eğitim hakkı", "Boş bırak"], "answer": 2}, {"q": "Aşağıdakilerden hangisi Kişisel Koruyucu Donanım (KKD) özelliği taşımayan bir ekipmandır?", "opts": ["Eldiven, bileklik ve kolluklar", "Koruyucu gözlükler", "Toz maskesi", "Takım Elbise", "Boş bırak"], "answer": 3}, {"q": "Aşağıdakilerden hangisi güvensiz durumlardan biri değildir?", "opts": ["Uykusuzluk", "Şakalaşma", "KKD kullanmama", "KKD verilmemesi", "Boş bırak"], "answer": 0}, {"q": "Yanma olayının oluşabilmesi için bir arada bulunması gereken maddeler hangi seçenekte doğru olarak verilmiştir?", "opts": ["Yanıcı madde-karbon monoksit-ısı", "Yanıcı madde-yakıcı madde-azot", "Oksijen-ısı-yanıcı madde", "Oksijen-hidrojen-yanıcı madde", "Boş bırak"], "answer": 2}, {"q": "Aşağıdakilerden hangisi iş kazası kapsamında değildir?", "opts": ["Sigortalının servis aracı ile kazaya uğraması", "Özel izin kullanarak evine mesai bitiminden önce giden yaya işçi", "Sigortalının işyerinde düşmesi sonucu yaralanması", "İşveren tarafından görevlendirme ile başka bir işyerinde çalışırken kazaya uğraması", "Boş bırak"], "answer": 1}, {"q": "İş kazaları ve meslek hastalıkları sonucunda aşağıdaki zararlardan hangisi olmaktadır?", "opts": ["Hepsi", "Maliyetlerde büyük artış", "İş gücü kaybı", "Ekonomide maddi ve manevi kayıp", "Boş bırak"], "answer": 0}, {"q": "İşveren aşağıdakilerden hangisini yapmakla yükümlü değildir?", "opts": ["Risk sonuçlarına göre önlem almak", "İş kazalarını görmezden gelmek", "Çalışanlara güvenli ve sağlıklı bir ortam sunmak", "Risk değerlendirme ekibi kurmak", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi güvensiz durumlara örnektir?", "opts": ["Şakalaşma", "KKD kullanmama", "Kaygan zemin", "Mesleki eğitimini tamamlamama", "Boş bırak"], "answer": 2}, {"q": "Türeşim, gürültü, aydınlatma, basınç, nem, radyasyon, hava akımı ve havalandırmaya bağlı olan işyeri faktörleri aşağıdakilerden hangisidir?", "opts": ["Fiziksel risk etmenleri", "Kimyasal risk etmenleri", "Psikososyal risk etmenleri", "Biyolojik risk etmenleri", "Boş bırak"], "answer": 0}, {"q": "Yeterli ölçümle tespit edilen gürültü maruziyet düzeyi aşağıdaki hangi sınır değerini aşmamalıdır?", "opts": ["85 db", "87 db", "90 db", "83 db", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi kişinin en temel hakkıdır?", "opts": ["Sağlıklı Yaşam", "Çalışma", "Seçme ve seçilme", "Eğitim", "Boş bırak"], "answer": 0}, {"q": "İnsanın iskelet ve vücut özelliklerini inceleyerek bunlara uygun yaşama ve çalışma ortamları yaratmayı amaçlayan bilim dalı aşağıdakilerden hangisidir?", "opts": ["Sosyoloji", "Psikoloji", "Fizyoloji", "Ergonomi", "Boş bırak"], "answer": 3}, {"q": "Aşağıdakilerden hangisi işyerinde oluşan psikososyal risk etmenlerindendir?", "opts": ["Mobbing", "Kanserojen maddeler", "Radyasyon", "Toksik ortam", "Boş bırak"], "answer": 0}, {"q": "İş kazalarını ve meslek hastalıklarını işveren, sigortalı çalışanı için kaç iş günü içinde SGK'ya bildirmek zorundadır?", "opts": ["2", "3", "5", "10", "Boş bırak"], "answer": 1}, {"q": "İş sağlığı ve güvenliğinin ana amacı nedir?", "opts": ["Çalışma ortamlarının termal konfor şartlarının sağlanmasıdır", "Çalışanlara daha yüksek ekonomik gelir düzeyi sağlamaktır", "İş yerlerinde iş sağlığı ve güvenliğinin sağlanması ve mevcut sağlık ve güvenlik şartlarının iyileştirilmesi için işveren ve çalışanların görev, yetki, sorumluluk, hak ve yükümlülüklerini düzenlemektir", "Çalışanların iş yerlerindeki verimlerinin artırılmasıdır", "Boş bırak"], "answer": 2}, {"q": "İş kazası nedir?", "opts": ["İşçinin isteyerek yaptığı kazadır.", "İşin yürütümü sırasında meydana gelen ve sigortalıyı bedenen veya ruhen zarara uğratan olaydır.", "İşverenin neden olduğu kaza türüdür.", "Üretim sırasında makinelerin zarar görmesidir.", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi iş sağlığı ve güvenliğinin hedeflerinden biridir?", "opts": ["İş verimini düşürmek", "Çalışanları korumak", "İş kazalarını gizlemek", "Üretim maliyetini artırmak", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi kimyasal risk etmenidir?", "opts": ["Toz", "Gazlar", "Radyasyon", "Gürültü", "Boş bırak"], "answer": 1}, {"q": "İş kazalarının temel nedenlerinden biri aşağıdakilerden hangisidir?", "opts": ["Güvensiz davranış", "Düşük maaş", "Aşırı mesai", "İşe geç kalmak", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi iş kazası sonrası yapılması gerekenlerden değildir?", "opts": ["Olayın hemen bildirilmesi", "Yaralıya ilk yardım uygulanması", "Olayın gizlenmesi", "SGK’ya bildirim yapılması", "Boş bırak"], "answer": 2}, {"q": "İşyerinde yangın söndürme cihazlarının bulundurulma amacı nedir?", "opts": ["Dekoratif amaçlı", "Yangın anında ilk müdahaleyi yapmak", "Denetimlerde görünüş sağlamak", "Çalışanların eğitimi için", "Boş bırak"], "answer": 1}, {"q": "Aşağıdakilerden hangisi biyolojik risk etmenidir?", "opts": ["Mikroorganizmalar", "Gürültü", "Titreşim", "Kimyasal buhar", "Boş bırak"], "answer": 0}, {"q": "İş kazalarını önlemede en etkili yöntem aşağıdakilerden hangisidir?", "opts": ["Eğitim ve farkındalık", "Ceza vermek", "Şakalaşmak", "KKD kullanmamak", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi kişisel koruyucu donanım örneğidir?", "opts": ["Eldiven", "Kravat", "Gömlek", "Şapka (güneşlik)", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi iş kazası sonucu ortaya çıkabilecek durumlardan biridir?", "opts": ["İş gücü kaybı", "Üretimin artması", "Maliyetlerin azalması", "Çalışan motivasyonunun yükselmesi", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi işyerinde fiziksel risk etmenlerine örnektir?", "opts": ["Gürültü", "Mikroorganizmalar", "Kimyasallar", "Stres", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi işyerinde güvenli davranışlardan biridir?", "opts": ["KKD kullanmak", "Şakalaşmak", "Kuralları görmezden gelmek", "Uykusuz çalışmak", "Boş bırak"], "answer": 0}, {"q": "İş sağlığı ve güvenliği kültürü nasıl oluşur?", "opts": ["Eğitim ve sürekli farkındalık çalışmalarıyla", "Ceza sistemiyle", "Sadece yöneticilerin uyarılarıyla", "Denetim günü öncesi hazırlıkla", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi işverenin yükümlülüklerinden biridir?", "opts": ["Risk değerlendirmesi yapmak", "Çalışanlara fazla iş vermek", "Güvenlik kurallarını azaltmak", "Koruyucu ekipman vermemek", "Boş bırak"], "answer": 0}, {"q": "Aşağıdakilerden hangisi psikososyal risk etmenlerinden biri değildir?", "opts": ["Mobbing", "Aşırı iş yükü", "Gürültü", "Düşük motivasyon", "Boş bırak"], "answer": 2}, {"q": "Aşağıdakilerden hangisi İSG’nin temel hedeflerinden biridir?", "opts": ["İş kazalarını ve meslek hastalıklarını önlemek", "Üretimi azaltmak", "Çalışan sayısını düşürmek", "Çalışanları cezalandırmak", "Boş bırak"], "answer": 0}];
+
+function render() {
+  const root = document.getElementById('quiz');
+  root.innerHTML = '';
+  questions.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const title = document.createElement('div');
+    title.className = 'q-title';
+    title.textContent = `Soru ${idx+1}: ${q.q}`;
+    card.appendChild(title);
+    q.opts.forEach((opt, i) => {
+      const id = `q${idx}_o${i}`;
+      const wrapper = document.createElement('label');
+      wrapper.className = 'opt';
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = `q${idx}`;
+      input.value = i;
+      input.id = id;
+      input.style.marginRight = '8px';
+      wrapper.appendChild(input);
+      const span = document.createElement('span');
+      const letters = ['a','b','c','d','e'];
+      span.textContent = `${letters[i]}) ${opt}`;
+      wrapper.appendChild(span);
+      card.appendChild(wrapper);
+    });
+    const ca = document.createElement('div');
+    ca.className = 'correct-answer';
+    ca.id = `ca_${idx}`;
+    ca.textContent = `Doğru cevap: ${['a','b','c','d','e'][q.answer]}) ${q.opts[q.answer]}`;
+    card.appendChild(ca);
+    root.appendChild(card);
+  });
+}
+
+function grade() {
+  let correct = 0;
+  questions.forEach((q, idx) => {
+    const chosen = document.querySelector(`input[name="q${idx}"]:checked`);
+    const answers = document.querySelectorAll(`input[name="q${idx}"]`);
+    answers.forEach((inp, i) => {
+      const label = inp.parentElement;
+      label.classList.remove('correct','incorrect');
+      if (inp.checked) {
+        if (i === q.answer) {
+          correct += 1;
+          label.classList.add('correct');
+        } else {
+          label.classList.add('incorrect');
+        }
+      }
+      inp.disabled = true;
+    });
+    const ca = document.getElementById(`ca_${idx}`);
+    ca.style.display = 'block';
+  });
+  const res = document.getElementById('result');
+  res.style.display = 'block';
+  res.innerHTML = `<div class="score">Sonuç: <b>${correct}</b> / <b>${questions.length}</b></div>`;
+  window.scrollTo({ top: res.offsetTop - 20, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  questions.forEach((q, idx) => {
+    const answers = document.querySelectorAll(`input[name="q${idx}"]`);
+    answers.forEach((inp) => { inp.checked = false; inp.disabled = false; inp.parentElement.classList.remove('correct','incorrect'); });
+    const ca = document.getElementById(`ca_${idx}`);
+    if (ca) ca.style.display = 'none';
+  });
+  document.getElementById('result').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+render();
+</script>
+</body>
+</html>
